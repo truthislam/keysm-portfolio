@@ -15,337 +15,500 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --bg-card: #111111;
-    --bg-elevated: #161616;
-    --text: #e8e8e8;
-    --text-muted: #888888;
-    --text-dim: #555555;
-    --accent: #c9f06b;
-    --accent-dim: #a8cc4e;
-    --border: #1e1e1e;
-    --radius: 14px;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body {
-    font-family:'DM Sans',sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection { background:var(--accent); color:var(--bg); }
+:root {
+  --bg:#0a0a0a;
+  --bg-card:#111111;
+  --bg-elevated:#161616;
+  --text:#e8e8e8;
+  --text-muted:#888;
+  --text-dim:#444;
+  --accent:#c9f06b;
+  --accent-dim:#a8cc4e;
+  --border:#1a1a1a;
+  --border-light:#252525;
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--accent);color:var(--bg);}
+img{display:block;max-width:100%;}
+@media(min-width:769px){body,a,button{cursor:none;}}
 
-  @media(min-width:769px) {
-    body, a, button { cursor:none; }
-  }
+/* ═══ UTILITIES ═══ */
+.wrap{max-width:1200px;margin:0 auto;padding:0 2.5rem;}
+.section-label{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--accent);margin-bottom:.75rem;font-weight:500;
+  display:flex;align-items:center;gap:.75rem;
+}
+.section-label::before{content:'';width:24px;height:1px;background:var(--accent);}
+.section-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(2rem,4vw,3.2rem);font-weight:400;
+  letter-spacing:-.025em;line-height:1.1;margin-bottom:1rem;
+}
+.section-title em{font-style:italic;color:var(--accent);}
+.section-desc{
+  color:var(--text-muted);max-width:520px;
+  font-size:1.05rem;line-height:1.75;
+}
 
-  /* ── NAV ── */
-  nav {
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    padding:1.25rem 2rem;
-    display:flex; justify-content:space-between; align-items:center;
-    background:transparent;
-    backdrop-filter:none;
-    border-bottom:1px solid transparent;
-    transition:background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
-  }
-  nav.scrolled {
-    background:rgba(10,10,10,0.88);
-    backdrop-filter:blur(20px);
-    border-bottom-color:var(--border);
-  }
-  .logo {
-    font-family:'Instrument Serif',serif;
-    font-size:1.5rem; color:var(--text); text-decoration:none;
-    letter-spacing:-0.02em;
-  }
-  .logo span { color:var(--accent); }
-  .nav-links { display:flex; gap:2rem; list-style:none; }
-  .nav-links a {
-    color:var(--text-muted); text-decoration:none;
-    font-size:0.875rem; font-weight:400; transition:color 0.2s;
-  }
-  .nav-links a:hover { color:var(--text); }
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:1.25rem 2.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  background:transparent;backdrop-filter:none;
+  border-bottom:1px solid transparent;
+  transition:background .4s,backdrop-filter .4s,border-color .4s;
+}
+nav.scrolled{
+  background:rgba(10,10,10,.9);
+  backdrop-filter:blur(20px);
+  border-bottom-color:var(--border);
+}
+.logo{
+  font-family:'Instrument Serif',serif;
+  font-size:1.6rem;color:var(--text);text-decoration:none;letter-spacing:-.02em;
+}
+.logo span{color:var(--accent);}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{
+  color:var(--text-muted);text-decoration:none;
+  font-size:.85rem;font-weight:400;transition:color .25s;
+}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{
+  background:var(--accent)!important;color:var(--bg)!important;
+  padding:.55rem 1.4rem;border-radius:100px;
+  font-weight:600!important;font-size:.8rem!important;
+  letter-spacing:.01em;
+  transition:transform .2s,box-shadow .2s;
+}
+.nav-cta:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(201,240,107,.25);
+}
 
-  /* ── HERO ── */
-  .hero {
-    position:relative; overflow:hidden;
-    min-height:100vh;
-    display:flex; flex-direction:column; justify-content:center;
-  }
-  .hero-video {
-    position:absolute; inset:0;
-    width:100%; height:100%;
-    object-fit:cover; z-index:0;
-  }
-  .hero-gradient {
-    position:absolute; inset:0; z-index:1;
-    background:linear-gradient(
-      to right,
-      rgba(10,10,10,0.90) 0%,
-      rgba(10,10,10,0.68) 55%,
-      rgba(10,10,10,0.30) 100%
-    );
-  }
-  .hero-fade-bottom {
-    position:absolute; bottom:0; left:0; right:0; z-index:1;
-    height:240px;
-    background:linear-gradient(to bottom, transparent, #0a0a0a);
-  }
-  .hero-content {
-    position:relative; z-index:2;
-    padding:8rem 2rem 4rem;
-    max-width:1100px; margin:0 auto; width:100%;
-  }
-  .hero-label {
-    font-size:0.8rem; text-transform:uppercase; letter-spacing:0.15em;
-    color:var(--accent); margin-bottom:1.5rem; font-weight:500;
-  }
-  .hero h1 {
-    font-family:'Instrument Serif',serif;
-    font-size:clamp(2.8rem,7vw,5.5rem);
-    line-height:1.05; font-weight:400; letter-spacing:-0.03em;
-    max-width:900px; margin-bottom:1.5rem;
-  }
-  .hero h1 em { font-style:italic; color:var(--accent); }
-  .hero p {
-    font-size:1.15rem; color:var(--text-muted);
-    max-width:540px; margin-bottom:2.5rem; line-height:1.7;
-  }
-  .hero-cta {
-    display:inline-flex; align-items:center; gap:0.75rem;
-    background:var(--accent); color:var(--bg);
-    padding:0.9rem 2rem; border-radius:100px;
-    text-decoration:none; font-weight:600; font-size:0.95rem;
-    transition:transform 0.2s, box-shadow 0.2s;
-  }
-  .hero-cta:hover {
-    transform:translateY(-2px);
-    box-shadow:0 8px 30px rgba(201,240,107,0.2);
-  }
-  .hero-cta svg { width:18px; height:18px; transition:transform 0.2s; }
-  .hero-cta:hover svg { transform:translateX(4px); }
+/* ═══ HERO ═══ */
+.hero{
+  position:relative;overflow:hidden;
+  min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+}
+.hero-video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;
+}
+.hero-gradient{
+  position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to right,rgba(10,10,10,.94) 0%,rgba(10,10,10,.72) 50%,rgba(10,10,10,.35) 100%),
+    linear-gradient(to top,rgba(10,10,10,1) 0%,transparent 35%);
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:0 2.5rem 6rem;max-width:1200px;margin:0 auto;width:100%;
+}
+.hero-label{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--accent);margin-bottom:1.75rem;font-weight:500;
+  display:flex;align-items:center;gap:.75rem;
+}
+.hero-label::before{content:'';width:32px;height:1px;background:var(--accent);}
+.hero h1{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(2.6rem,6.2vw,5rem);
+  line-height:1.06;font-weight:400;letter-spacing:-.03em;
+  max-width:780px;margin-bottom:1.75rem;
+}
+.hero h1 em{font-style:italic;color:var(--accent);}
+.hero-sub{
+  font-size:1.05rem;color:var(--text-muted);
+  max-width:480px;margin-bottom:2.5rem;line-height:1.75;
+}
+.hero-actions{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--accent);color:var(--bg);
+  padding:.9rem 2rem;border-radius:100px;
+  text-decoration:none;font-weight:600;font-size:.9rem;
+  transition:transform .2s,box-shadow .2s;
+  border:none;font-family:'DM Sans',sans-serif;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(201,240,107,.22);
+}
+.btn-primary svg{width:16px;height:16px;transition:transform .2s;}
+.btn-primary:hover svg{transform:translateX(4px);}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:.5rem;
+  border:1px solid var(--border-light);color:var(--text);
+  padding:.85rem 1.75rem;border-radius:100px;
+  text-decoration:none;font-weight:500;font-size:.88rem;
+  transition:all .2s;background:transparent;
+}
+.btn-outline:hover{border-color:var(--text);background:rgba(255,255,255,.04);}
+.btn-outline svg{width:16px;height:16px;}
 
-  /* ── SHARED ── */
-  section { padding:6rem 2rem; max-width:1100px; margin:0 auto; }
-  .section-label {
-    font-size:0.75rem; text-transform:uppercase; letter-spacing:0.2em;
-    color:var(--accent); margin-bottom:0.75rem; font-weight:500;
-  }
-  .section-title {
-    font-family:'Instrument Serif',serif;
-    font-size:clamp(2rem,4vw,3rem); font-weight:400;
-    letter-spacing:-0.02em; margin-bottom:1rem;
-  }
-  .section-desc {
-    color:var(--text-muted); max-width:560px;
-    margin-bottom:3.5rem; font-size:1.05rem; line-height:1.7;
-  }
+/* ═══ TICKER ═══ */
+.ticker{
+  overflow:hidden;padding:1.5rem 0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.ticker-track{
+  display:flex;width:max-content;
+  animation:ticker 50s linear infinite;
+}
+.ticker-track span{
+  font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;
+  color:var(--text-dim);white-space:nowrap;
+  padding:0 2rem;display:flex;align-items:center;gap:2rem;
+  font-weight:500;
+}
+.ticker-track span::after{
+  content:'';width:5px;height:5px;
+  background:var(--accent);border-radius:50%;flex-shrink:0;
+}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
-  /* ── CREDIBILITY GAP ── */
-  .gap-section {
-    border-top:1px solid var(--border);
-    border-bottom:1px solid var(--border);
-    padding:6rem 2rem;
-  }
-  .gap-inner { max-width:1100px; margin:0 auto; }
-  .gap-grid {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:4rem;
-    margin-top:2.5rem;
-  }
-  .gap-narrative {
-    font-size:1.05rem;
-    color:var(--text-muted);
-    line-height:1.8;
-  }
-  .gap-narrative p + p { margin-top:1.5rem; }
-  .gap-narrative strong { color:var(--text); font-weight:500; }
-  .gap-signals {
-    display:flex;
-    flex-direction:column;
-    gap:1.5rem;
-  }
-  .gap-signal {
-    border-left:2px solid var(--border);
-    padding-left:1.5rem;
-    transition:border-color 0.3s;
-  }
-  .gap-signal:hover { border-color:var(--accent); }
-  .gap-signal-title {
-    font-size:0.95rem;
-    font-weight:600;
-    color:var(--text);
-    margin-bottom:0.35rem;
-  }
-  .gap-signal-desc {
-    font-size:0.85rem;
-    color:var(--text-muted);
-    line-height:1.6;
-  }
+/* ═══ CREDIBILITY GAP ═══ */
+.gap-section{padding:7rem 0;}
+.gap-header{margin-bottom:4rem;}
+.gap-header .section-desc{margin-top:1rem;}
+.gap-quote{
+  border-left:3px solid var(--accent);
+  padding:2rem 0 2rem 2.5rem;
+  margin:3rem 0;
+}
+.gap-quote p{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.4rem,2.5vw,2rem);
+  line-height:1.35;color:var(--text);
+  font-style:italic;max-width:700px;
+}
+.gap-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;
+  margin-top:3rem;
+}
+.gap-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:2rem;
+  transition:border-color .3s;position:relative;overflow:hidden;
+}
+.gap-card:hover{border-color:var(--border-light);}
+.gap-card-num{
+  font-family:'Instrument Serif',serif;
+  font-size:4rem;color:rgba(201,240,107,.07);
+  position:absolute;top:-.25rem;right:.75rem;line-height:1;
+  font-weight:400;pointer-events:none;
+}
+.gap-card h3{
+  font-size:.95rem;font-weight:600;margin-bottom:.5rem;line-height:1.3;
+}
+.gap-card p{
+  font-size:.85rem;color:var(--text-muted);line-height:1.65;
+}
 
-  /* ── SERVICES ── */
-  .services-grid {
-    display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;
-  }
-  .svc-card {
-    background:var(--bg-card); border:1px solid var(--border);
-    border-radius:var(--radius); padding:2.25rem;
-    display:flex; flex-direction:column; transition:border-color 0.3s;
-  }
-  .svc-card:hover { border-color:#333; }
-  .svc-card.primary { border-color:var(--accent); position:relative; }
-  .svc-card.primary::before {
-    content:'Flagship'; position:absolute; top:-0.7rem; left:2rem;
-    background:var(--accent); color:var(--bg);
-    font-size:0.7rem; font-weight:700; text-transform:uppercase;
-    letter-spacing:0.08em; padding:0.25rem 0.75rem; border-radius:100px;
-  }
-  .svc-label {
-    font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em;
-    color:var(--text-dim); margin-bottom:1.25rem; font-weight:500;
-  }
-  .svc-name {
-    font-family:'Instrument Serif',serif; font-size:1.5rem;
-    line-height:1.2; margin-bottom:0.75rem;
-  }
-  .svc-desc {
-    font-size:0.9rem; color:var(--text-muted); line-height:1.7;
-    margin-bottom:1.5rem; flex:1;
-  }
-  .svc-items {
-    list-style:none; margin-bottom:2rem;
-    border-top:1px solid var(--border); padding-top:1rem;
-  }
-  .svc-items li {
-    padding:0.4rem 0; font-size:0.85rem; color:var(--text-muted);
-    display:flex; align-items:baseline; gap:0.6rem;
-  }
-  .svc-items li::before {
-    content:'\2713'; color:var(--accent); font-weight:700; font-size:0.75rem;
-    flex-shrink:0;
-  }
-  .svc-cta {
-    display:block; text-align:center; padding:0.85rem 1.5rem;
-    border-radius:100px; text-decoration:none; font-weight:600; font-size:0.9rem;
-    transition:all 0.2s; border:1px solid var(--border); color:var(--text);
-    background:transparent; margin-top:auto;
-  }
-  .svc-cta:hover { background:var(--text); color:var(--bg); border-color:var(--text); }
-  .svc-card.primary .svc-cta {
-    background:var(--accent); color:var(--bg); border-color:var(--accent);
-  }
-  .svc-card.primary .svc-cta:hover {
-    background:#d4f57a; box-shadow:0 4px 20px rgba(201,240,107,0.25);
-  }
+/* ═══ FULL-BLEED IMAGE ═══ */
+.bleed-image{
+  width:100%;height:380px;position:relative;overflow:hidden;
+}
+.bleed-image img{width:100%;height:100%;object-fit:cover;}
+.bleed-image::before,.bleed-image::after{
+  content:'';position:absolute;left:0;right:0;height:120px;z-index:1;
+  pointer-events:none;
+}
+.bleed-image::before{top:0;background:linear-gradient(to bottom,var(--bg),transparent);}
+.bleed-image::after{bottom:0;background:linear-gradient(to top,var(--bg),transparent);}
 
-  /* ── PROCESS ── */
-  .process-steps {
-    display:grid; grid-template-columns:repeat(3,1fr);
-    gap:2rem; margin-top:2rem;
-  }
-  .step-num {
-    font-family:'Instrument Serif',serif;
-    font-size:3.5rem; color:#1a1a1a; line-height:1; margin-bottom:0.75rem;
-  }
-  .step-title { font-weight:600; font-size:1rem; margin-bottom:0.5rem; }
-  .step-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+/* ═══ SERVICES ═══ */
+.services-section{padding:7rem 0;}
+.services-header{margin-bottom:3.5rem;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.svc-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:2.25rem;
+  display:flex;flex-direction:column;
+  transition:border-color .3s;position:relative;
+}
+.svc-card:hover{border-color:var(--border-light);}
+.svc-card.flagship{border-color:var(--accent);}
+.svc-badge{
+  position:absolute;top:-10px;left:2rem;
+  background:var(--accent);color:var(--bg);
+  font-size:.65rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;padding:.25rem .75rem;border-radius:100px;
+}
+.svc-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:rgba(201,240,107,.06);
+  border:1px solid rgba(201,240,107,.1);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.5rem;
+}
+.svc-icon svg{width:22px;height:22px;stroke:var(--accent);fill:none;}
+.svc-tier{
+  font-size:.68rem;text-transform:uppercase;letter-spacing:.15em;
+  color:var(--text-dim);margin-bottom:.6rem;font-weight:500;
+}
+.svc-name{
+  font-family:'Instrument Serif',serif;font-size:1.4rem;
+  line-height:1.2;margin-bottom:.75rem;
+}
+.svc-desc{
+  font-size:.88rem;color:var(--text-muted);line-height:1.7;
+  margin-bottom:1.5rem;
+}
+.svc-list{
+  list-style:none;border-top:1px solid var(--border);
+  padding-top:1rem;margin-bottom:1.75rem;flex:1;
+  display:grid;grid-template-columns:1fr 1fr;gap:.15rem .75rem;
+}
+.svc-list li{
+  font-size:.8rem;color:var(--text-muted);
+  display:flex;align-items:baseline;gap:.5rem;
+  padding:.25rem 0;
+}
+.svc-list li::before{
+  content:'';width:4px;height:4px;background:var(--accent);
+  border-radius:50%;flex-shrink:0;margin-top:.35rem;
+}
+.svc-cta{
+  display:block;text-align:center;padding:.8rem 1.5rem;
+  border-radius:100px;text-decoration:none;font-weight:600;font-size:.88rem;
+  transition:all .2s;border:1px solid var(--border);color:var(--text);
+  background:transparent;margin-top:auto;
+}
+.svc-cta:hover{background:var(--text);color:var(--bg);border-color:var(--text);}
+.svc-card.flagship .svc-cta{
+  background:var(--accent);color:var(--bg);border-color:var(--accent);
+}
+.svc-card.flagship .svc-cta:hover{
+  background:#d4f57a;box-shadow:0 4px 20px rgba(201,240,107,.25);
+}
 
-  /* ── CONTACT ── */
-  .contact-section {
-    background:var(--bg-card); border:1px solid var(--border);
-    border-radius:var(--radius); padding:3rem; max-width:640px;
-  }
-  .form-group { margin-bottom:1.25rem; }
-  .form-group label {
-    display:block; font-size:0.8rem; text-transform:uppercase;
-    letter-spacing:0.1em; color:var(--text-muted);
-    margin-bottom:0.5rem; font-weight:500;
-  }
-  .form-group input, .form-group select {
-    width:100%; padding:0.85rem 1rem; background:var(--bg);
-    border:1px solid var(--border); border-radius:8px;
-    color:var(--text); font-family:'DM Sans',sans-serif;
-    font-size:0.95rem; outline:none; transition:border-color 0.2s;
-    -webkit-appearance:none; appearance:none;
-  }
-  .form-group input:focus, .form-group select:focus { border-color:var(--accent); }
-  .form-group select {
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 1rem center; padding-right:2.5rem;
-  }
-  .form-group select option { background:var(--bg); color:var(--text); }
-  .submit-btn {
-    display:inline-flex; align-items:center; gap:0.5rem;
-    background:var(--accent); color:var(--bg); border:none;
-    padding:0.9rem 2.5rem; border-radius:100px;
-    font-weight:600; font-size:0.95rem;
-    font-family:'DM Sans',sans-serif;
-    transition:transform 0.2s, box-shadow 0.2s; margin-top:0.5rem;
-  }
-  .submit-btn:hover {
-    transform:translateY(-2px);
-    box-shadow:0 6px 24px rgba(201,240,107,0.2);
-  }
-  .form-note { font-size:0.78rem; color:var(--text-muted); margin-top:1rem; }
+/* ═══ CASE STUDY ═══ */
+.case-section{
+  padding:7rem 0;
+  border-top:1px solid var(--border);
+}
+.case-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;
+  align-items:center;margin-top:3rem;
+}
+.case-browser{
+  background:#0e0e0e;border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.4);
+}
+.case-browser-bar{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.75rem 1rem;border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+}
+.case-browser-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--border-light);
+}
+.case-browser-url{
+  flex:1;text-align:center;
+  font-size:.7rem;color:var(--text-dim);letter-spacing:.02em;
+}
+.case-browser-img{
+  width:100%;aspect-ratio:16/10;overflow:hidden;position:relative;
+}
+.case-browser-img img{
+  width:100%;height:100%;object-fit:cover;object-position:top;
+}
+.case-text .section-label{margin-bottom:.75rem;}
+.case-text .section-title{margin-bottom:1.25rem;}
+.case-desc{
+  color:var(--text-muted);font-size:.95rem;line-height:1.75;
+  margin-bottom:2rem;
+}
+.case-desc strong{color:var(--text);font-weight:500;}
+.case-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
+  margin-bottom:2rem;
+}
+.case-stat{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:10px;padding:1.25rem;
+}
+.case-stat-val{
+  font-family:'Instrument Serif',serif;
+  font-size:1.6rem;color:var(--accent);line-height:1;margin-bottom:.35rem;
+}
+.case-stat-label{font-size:.75rem;color:var(--text-muted);line-height:1.4;}
+.case-link{
+  display:inline-flex;align-items:center;gap:.5rem;
+  color:var(--accent);text-decoration:none;font-size:.88rem;
+  font-weight:500;transition:gap .2s;
+}
+.case-link:hover{gap:.75rem;}
+.case-link svg{width:16px;height:16px;}
 
-  footer {
-    border-top:1px solid var(--border);
-    padding:2.5rem 2rem; text-align:center;
-  }
-  footer p { font-size:0.8rem; color:var(--text-muted); }
+/* ═══ PROCESS ═══ */
+.process-section{
+  padding:7rem 0;
+  background:var(--bg-card);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.process-header{margin-bottom:3rem;}
+.process-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+}
+.process-step{
+  padding:2.5rem;position:relative;
+  border-right:1px solid var(--border);
+}
+.process-step:last-child{border-right:none;}
+.process-num{
+  font-family:'Instrument Serif',serif;
+  font-size:2.5rem;color:var(--accent);line-height:1;
+  margin-bottom:1.25rem;opacity:.5;
+}
+.process-step:first-child .process-num{opacity:1;}
+.process-step h3{font-size:1rem;font-weight:600;margin-bottom:.6rem;line-height:1.3;}
+.process-step p{font-size:.85rem;color:var(--text-muted);line-height:1.7;}
 
-  /* ── CUSTOM CURSOR ── */
-  .cursor-dot {
-    width:12px; height:12px;
-    background:var(--accent); border-radius:50%;
-    position:fixed; pointer-events:none; z-index:9999;
-    transform:translate(-50%,-50%);
-    transition:width 0.15s, height 0.15s, opacity 0.2s;
-  }
-  .cursor-ring {
-    width:36px; height:36px;
-    border:1.5px solid rgba(201,240,107,0.7);
-    border-radius:50%;
-    position:fixed; pointer-events:none; z-index:9998;
-    transform:translate(-50%,-50%);
-    transition:width 0.2s ease, height 0.2s ease, border-color 0.2s;
-  }
-  .cursor-ring.hovered {
-    width:52px; height:52px;
-    border-color:var(--accent);
-  }
+/* ═══ CONTACT ═══ */
+.contact-section{padding:7rem 0;}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;
+  align-items:start;
+}
+.contact-info .section-desc{margin-bottom:2.5rem;}
+.wa-block{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.75rem;
+  display:flex;align-items:center;gap:1.25rem;
+  margin-top:2rem;transition:border-color .3s;
+  text-decoration:none;
+}
+.wa-block:hover{border-color:#25d366;}
+.wa-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:#25d366;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.wa-icon svg{width:24px;height:24px;fill:#fff;}
+.wa-text{font-size:.9rem;line-height:1.5;}
+.wa-text strong{display:block;color:var(--text);margin-bottom:.15rem;}
+.wa-text span{color:var(--text-muted);font-size:.82rem;}
+.contact-form{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:2.5rem;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{
+  display:block;font-size:.75rem;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--text-muted);
+  margin-bottom:.4rem;font-weight:500;
+}
+.form-group input,.form-group select{
+  width:100%;padding:.8rem 1rem;background:var(--bg);
+  border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:.9rem;outline:none;transition:border-color .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent);}
+.form-group select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;
+}
+.form-group select option{background:var(--bg);color:var(--text);}
+.submit-btn{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  width:100%;background:var(--accent);color:var(--bg);border:none;
+  padding:.9rem 2rem;border-radius:100px;
+  font-weight:600;font-size:.9rem;font-family:'DM Sans',sans-serif;
+  transition:transform .2s,box-shadow .2s;margin-top:.5rem;
+}
+.submit-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 24px rgba(201,240,107,.2);
+}
+.submit-btn svg{width:16px;height:16px;}
+.form-note{font-size:.74rem;color:var(--text-dim);margin-top:.75rem;line-height:1.5;}
 
-  /* ── RESPONSIVE ── */
-  @media(max-width:768px) {
-    nav { padding:1rem 1.25rem; }
-    .nav-links { display:none; }
-    .hero-content { padding:7rem 1.25rem 3rem; }
-    section { padding:4rem 1.25rem; }
-    .gap-section { padding:4rem 1.25rem; }
-    .gap-grid { grid-template-columns:1fr; gap:2.5rem; }
-    .services-grid { grid-template-columns:1fr; }
-    .process-steps { grid-template-columns:1fr; }
-    .contact-section { padding:2rem 1.5rem; }
-    .cursor-dot, .cursor-ring { display:none; }
-    body, a, button { cursor:auto; }
-  }
+/* ═══ FOOTER ═══ */
+footer{
+  border-top:1px solid var(--border);padding:2.5rem 2.5rem;
+}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-logo{
+  font-family:'Instrument Serif',serif;
+  font-size:1.2rem;color:var(--text);text-decoration:none;
+}
+.footer-logo span{color:var(--accent);}
+footer p{font-size:.78rem;color:var(--text-dim);}
 
-  /* ── HERO ENTRANCE ── */
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(24px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-  .hero-label, .hero h1, .hero p, .hero-cta {
-    animation:fadeUp 0.7s ease-out both;
-  }
-  .hero h1   { animation-delay:0.1s; }
-  .hero p    { animation-delay:0.2s; }
-  .hero-cta  { animation-delay:0.3s; }
+/* ═══ CURSOR ═══ */
+.cursor-dot{
+  width:10px;height:10px;background:var(--accent);border-radius:50%;
+  position:fixed;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .15s,height .15s;
+}
+.cursor-ring{
+  width:36px;height:36px;
+  border:1.5px solid rgba(201,240,107,.6);border-radius:50%;
+  position:fixed;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width .2s ease,height .2s ease,border-color .2s;
+}
+.cursor-ring.hovered{width:52px;height:52px;border-color:var(--accent);}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+  .wrap{padding:0 1.25rem;}
+  nav{padding:1rem 1.25rem;}
+  .nav-links{display:none;}
+  .hero-content{padding:0 1.25rem 4rem;}
+  .gap-section,.services-section,.case-section,.contact-section{padding:4.5rem 0;}
+  .gap-grid{grid-template-columns:1fr;}
+  .services-grid{grid-template-columns:1fr;}
+  .svc-list{grid-template-columns:1fr;}
+  .case-layout{grid-template-columns:1fr;gap:2.5rem;}
+  .case-stats{grid-template-columns:1fr 1fr;}
+  .process-grid{grid-template-columns:1fr;}
+  .process-step{border-right:none;border-bottom:1px solid var(--border);padding:2rem 0;}
+  .process-step:last-child{border-bottom:none;}
+  .contact-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .contact-form{padding:1.75rem;}
+  .form-row{grid-template-columns:1fr;}
+  .bleed-image{height:240px;}
+  .cursor-dot,.cursor-ring{display:none;}
+  body,a,button{cursor:auto;}
+  .footer-inner{flex-direction:column;gap:.75rem;text-align:center;}
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.hero-label,.hero h1,.hero-sub,.hero-actions{
+  animation:fadeUp .7s ease-out both;
+}
+.hero h1{animation-delay:.1s;}
+.hero-sub{animation-delay:.2s;}
+.hero-actions{animation-delay:.3s;}
 </style>
 </head>
 <body>
@@ -356,268 +519,367 @@
   <ul class="nav-links">
     <li><a href="#gap">The Problem</a></li>
     <li><a href="#services">Services</a></li>
+    <li><a href="#work">Our Work</a></li>
     <li><a href="#process">Process</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact" class="nav-cta">Get Your Audit</a></li>
   </ul>
 </nav>
 
 <!-- ═══ 1. HERO ═══ -->
 <header class="hero">
   <video class="hero-video" autoplay muted loop playsinline poster="images/hero-poster.jpg">
-    <source src="hero.mp4" type="video/mp4">
+    <source src="videos/hero.mp4" type="video/mp4">
   </video>
   <div class="hero-gradient"></div>
-  <div class="hero-fade-bottom"></div>
   <div class="hero-content">
     <div class="hero-label">Industrial Authority Consulting</div>
     <h1>Your execution is tier-one. Your presence <em>is not.</em></h1>
-    <p>Gulf industrial contractors lose bids, miss prequalifications, and get filtered out silently because their commercial presence does not match their execution capability. We fix that gap.</p>
-    <a href="#contact" class="hero-cta">
-      Request a Digital Authority Audit
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-    </a>
+    <p class="hero-sub">Gulf industrial contractors lose bids and get filtered from prequalifications because their commercial presence does not match their execution capability. We close that gap.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">
+        Request a Digital Authority Audit
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      </a>
+      <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="btn-outline">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.547 4.098 1.504 5.828L0 24l6.335-1.652A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-1.875 0-3.656-.5-5.216-1.392l-.375-.222-3.856 1.012 1.03-3.77-.244-.388A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+        WhatsApp Us
+      </a>
+    </div>
   </div>
 </header>
 
-<!-- ═══ 2. THE CREDIBILITY GAP ═══ -->
+<!-- ═══ TICKER ═══ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>Steel Fabrication</span><span>MEP Contractors</span><span>General Contracting</span><span>HVAC &amp; Mechanical</span><span>Infrastructure</span><span>Marine &amp; Offshore</span><span>Electrical Contracting</span><span>EPC Contractors</span><span>Steel Fabrication</span><span>MEP Contractors</span><span>General Contracting</span><span>HVAC &amp; Mechanical</span><span>Infrastructure</span><span>Marine &amp; Offshore</span><span>Electrical Contracting</span><span>EPC Contractors</span>
+  </div>
+</div>
+
+<!-- ═══ 2. CREDIBILITY GAP ═══ -->
 <div class="gap-section" id="gap">
-  <div class="gap-inner">
-    <div class="section-label" data-aos="fade-up">The Problem</div>
-    <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Buyers decide before they call you</h2>
+  <div class="wrap">
+    <div class="gap-header" data-aos="fade-up">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">Buyers decide before they <em>call you</em></h2>
+      <p class="section-desc">Procurement teams, EPC contractors, and project owners evaluate your company through your commercial materials long before any meeting. Your capability statement. Your project documentation. Your digital footprint.</p>
+    </div>
+    <div class="gap-quote" data-aos="fade-up" data-aos-delay="100">
+      <p>If your materials look outdated, poorly written, or unprofessional, you are filtered out silently. No rejection email. No feedback. The bid invitation simply never arrives.</p>
+    </div>
     <div class="gap-grid">
-      <div class="gap-narrative" data-aos="fade-up" data-aos-delay="150">
-        <p>Procurement teams, EPC contractors, and project owners evaluate your company through your commercial materials long before any meeting happens. Your capability statement. Your project documentation. Your digital presence. These are the first filters.</p>
-        <p><strong>If those materials look outdated, poorly written, or unprofessional, you are filtered out silently.</strong> No rejection email. No feedback. No second chance. The bid invitation simply never arrives.</p>
-        <p>The contractors winning work are not always better at execution. They are better at presenting their execution in the language and format buyers trust. That is the gap we close.</p>
+      <div class="gap-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="gap-card-num">01</div>
+        <h3>Capability statements that undermine credibility</h3>
+        <p>Poorly formatted PDFs with broken English, outdated project lists, and missing certifications. The document you send to every prospect is working against you.</p>
       </div>
-      <div class="gap-signals" data-aos="fade-up" data-aos-delay="250">
-        <div class="gap-signal">
-          <div class="gap-signal-title">Capability statements that undermine credibility</div>
-          <div class="gap-signal-desc">Poorly formatted PDFs with broken English, outdated project lists, and missing certifications. The document you send to every prospect is quietly working against you.</div>
+      <div class="gap-card" data-aos="fade-up" data-aos-delay="80">
+        <div class="gap-card-num">02</div>
+        <h3>Project history with zero documentation</h3>
+        <p>You completed 50 projects. Your materials show none of them. No case studies, no photos, no scope descriptions. Buyers cannot trust what they cannot see.</p>
+      </div>
+      <div class="gap-card" data-aos="fade-up" data-aos-delay="160">
+        <div class="gap-card-num">03</div>
+        <h3>Digital presence that signals a smaller operation</h3>
+        <p>Your online presence looks like a company a third of your size. Procurement teams checking your credibility see something that does not match the work you deliver.</p>
+      </div>
+      <div class="gap-card" data-aos="fade-up" data-aos-delay="240">
+        <div class="gap-card-num">04</div>
+        <h3>Bid materials assembled under pressure</h3>
+        <p>Every deadline becomes a scramble. Experience matrices, QA/HSE presentations, project sheets built last minute. The package looks rushed because it was.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ IMAGE BREAK ═══ -->
+<div class="bleed-image">
+  <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=1800" alt="Steel fabrication work" loading="lazy">
+</div>
+
+<!-- ═══ 3. SERVICES ═══ -->
+<div class="services-section" id="services">
+  <div class="wrap">
+    <div class="services-header" data-aos="fade-up">
+      <div class="section-label">Services</div>
+      <h2 class="section-title">Commercial credibility <em>infrastructure</em></h2>
+      <p class="section-desc">We rebuild the commercial materials that determine whether buyers trust you before the first conversation.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="svc-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
         </div>
-        <div class="gap-signal">
-          <div class="gap-signal-title">Project history with zero documentation</div>
-          <div class="gap-signal-desc">You completed 50 projects. Your materials show none of them. No case studies, no photos, no scope descriptions. Buyers cannot trust what they cannot see.</div>
+        <div class="svc-tier">Fast Entry</div>
+        <div class="svc-name">Capability Statement Redesign</div>
+        <div class="svc-desc">The document attached to every bid you submit. If it does not command trust in 10 seconds, it is costing you work. We rebuild it completely.</div>
+        <ul class="svc-list">
+          <li>Full content restructure</li>
+          <li>Technical English copy</li>
+          <li>Professional layout</li>
+          <li>Certification highlights</li>
+          <li>Print + digital formats</li>
+          <li>3-5 day delivery</li>
+        </ul>
+        <a href="#contact" class="svc-cta">Get Started</a>
+      </div>
+      <div class="svc-card flagship" data-aos="fade-up" data-aos-delay="100">
+        <div class="svc-badge">Flagship</div>
+        <div class="svc-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg>
         </div>
-        <div class="gap-signal">
-          <div class="gap-signal-title">Digital presence that signals a smaller operation</div>
-          <div class="gap-signal-desc">Your online presence looks like a company a third of your size. Procurement teams checking your credibility online see something that does not match the work you actually deliver.</div>
+        <div class="svc-tier">Full Rebuild</div>
+        <div class="svc-name">Industrial Authority Pack</div>
+        <div class="svc-desc">A complete overhaul of how the market sees your company. Buyers see a tier-one supplier on first contact. The full transformation.</div>
+        <ul class="svc-list">
+          <li>Digital presence rebuild</li>
+          <li>Technical copy + architecture</li>
+          <li>Project portfolio system</li>
+          <li>Capability statement</li>
+          <li>Trust signal optimization</li>
+          <li>Inquiry funnel + contact</li>
+          <li>10-14 day delivery</li>
+        </ul>
+        <a href="#contact" class="svc-cta">Get Started</a>
+      </div>
+      <div class="svc-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="svc-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z"/></svg>
         </div>
-        <div class="gap-signal">
-          <div class="gap-signal-title">Bid materials assembled under pressure</div>
-          <div class="gap-signal-desc">Every submission deadline becomes a scramble. Experience matrices, project sheets, QA/HSE presentations built at the last minute in inconsistent formats. The bid package looks rushed because it was.</div>
+        <div class="svc-tier">Bid Support</div>
+        <div class="svc-name">Bid Credibility Pack</div>
+        <div class="svc-desc">Your bid materials should close deals, not lose them. We build the collateral that gives procurement teams confidence before you walk in.</div>
+        <ul class="svc-list">
+          <li>Project case studies</li>
+          <li>Experience matrices</li>
+          <li>QA/HSE presentations</li>
+          <li>Project data sheets</li>
+          <li>Proposal support docs</li>
+          <li>PreQual support</li>
+        </ul>
+        <a href="#contact" class="svc-cta">Get Started</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 4. CASE STUDY ═══ -->
+<div class="case-section" id="work">
+  <div class="wrap">
+    <div class="case-layout">
+      <div class="case-browser" data-aos="fade-up">
+        <div class="case-browser-bar">
+          <div class="case-browser-dot"></div>
+          <div class="case-browser-dot"></div>
+          <div class="case-browser-dot"></div>
+          <div class="case-browser-url">standard-steel.vercel.app</div>
+        </div>
+        <div class="case-browser-img">
+          <img src="https://api.microlink.io/?url=https://standard-steel.vercel.app&screenshot=true&meta=false&embed=screenshot.url&type=png&viewport.width=1280&viewport.height=800" alt="Standard Steel Fabrication website rebuilt by Keysm" loading="lazy">
+        </div>
+      </div>
+      <div class="case-text" data-aos="fade-up" data-aos-delay="100">
+        <div class="section-label">Recent Work</div>
+        <h2 class="section-title">Standard Steel<br><em>Fabrication Co</em></h2>
+        <p class="case-desc">A Dubai-based steel fabricator with 15+ years of execution and zero digital presence to show for it. We rebuilt their entire commercial identity from the ground up. <strong>Capability statement, digital presence, project portfolio, trust infrastructure.</strong> The full Industrial Authority Pack.</p>
+        <div class="case-stats">
+          <div class="case-stat">
+            <div class="case-stat-val">500+</div>
+            <div class="case-stat-label">Projects documented</div>
+          </div>
+          <div class="case-stat">
+            <div class="case-stat-val">ISO 9001</div>
+            <div class="case-stat-label">Compliance positioned</div>
+          </div>
+          <div class="case-stat">
+            <div class="case-stat-val">Full</div>
+            <div class="case-stat-label">Authority Pack delivered</div>
+          </div>
+          <div class="case-stat">
+            <div class="case-stat-val">14 days</div>
+            <div class="case-stat-label">Total turnaround</div>
+          </div>
+        </div>
+        <a href="https://standard-steel.vercel.app" target="_blank" class="case-link">
+          View live site
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5. PROCESS ═══ -->
+<div class="process-section" id="process">
+  <div class="wrap">
+    <div class="process-header" data-aos="fade-up">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-title">From audit to <em>authority</em></h2>
+      <p class="section-desc">No committees. No revision cycles that drag for months. We handle the rebuild so you stay focused on execution.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step" data-aos="fade-up" data-aos-delay="0">
+        <div class="process-num">01</div>
+        <h3>We score your commercial presence</h3>
+        <p>We audit your digital presence, capability materials, and project documentation across 10 trust dimensions. You receive a clear breakdown of where buyers lose confidence and what to fix first.</p>
+      </div>
+      <div class="process-step" data-aos="fade-up" data-aos-delay="100">
+        <div class="process-num">02</div>
+        <h3>We rebuild what matters</h3>
+        <p>Technical English copy, professional design, structured project portfolios, capability architecture, and commercial positioning. Every decision tied to how buyers evaluate industrial contractors.</p>
+      </div>
+      <div class="process-step" data-aos="fade-up" data-aos-delay="200">
+        <div class="process-num">03</div>
+        <h3>You deploy with confidence</h3>
+        <p>Your new commercial presence goes live. Clean handoff, full documentation. Buyers see a tier-one supplier before the first conversation. The gap is closed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6. CONTACT ═══ -->
+<div class="contact-section" id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-info" data-aos="fade-up">
+        <div class="section-label">Start Here</div>
+        <h2 class="section-title">Request a Digital<br><em>Authority Audit</em></h2>
+        <p class="section-desc">We score your commercial presence across 10 trust dimensions and show you exactly where the gap is. No obligation. No sales pitch. Just a clear picture.</p>
+        <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="wa-block">
+          <div class="wa-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.112.547 4.098 1.504 5.828L0 24l6.335-1.652A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-1.875 0-3.656-.5-5.216-1.392l-.375-.222-3.856 1.012 1.03-3.77-.244-.388A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+          </div>
+          <div class="wa-text">
+            <strong>Prefer WhatsApp?</strong>
+            <span>Message us directly. Most Gulf teams do.</span>
+          </div>
+        </a>
+      </div>
+      <div class="contact-form" data-aos="fade-up" data-aos-delay="100">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+          <input type="hidden" name="subject" value="Digital Authority Audit Request — Keysm">
+          <input type="checkbox" name="botcheck" style="display:none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="Ahmed Al-Rashidi" required>
+            </div>
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" placeholder="Gulf Steel Fabrication LLC" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@company.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">WhatsApp / Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="+971 50 000 0000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="website">Current Website <span style="color:var(--text-dim);font-size:.65rem;text-transform:none;letter-spacing:0;">(if any)</span></label>
+            <input type="url" id="website" name="website" placeholder="https://yourcompany.com">
+          </div>
+          <div class="form-group">
+            <label for="sector">Sector</label>
+            <select id="sector" name="sector">
+              <option value="" disabled selected>Select your industry</option>
+              <option value="Steel Fabrication">Steel Fabrication</option>
+              <option value="MEP Contracting">MEP Contracting</option>
+              <option value="General Contracting / EPC">General Contracting / EPC</option>
+              <option value="HVAC / Mechanical">HVAC / Mechanical</option>
+              <option value="Infrastructure / Civil">Infrastructure / Civil</option>
+              <option value="Marine / Offshore">Marine / Offshore</option>
+              <option value="Electrical Contracting">Electrical Contracting</option>
+              <option value="Other Industrial">Other Industrial</option>
+            </select>
+          </div>
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Request Your Audit
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+          <p class="form-note">You will receive a Digital Authority Score across 10 trust dimensions with recommendations ranked by impact. Delivered within 48 hours.</p>
+        </form>
+        <div id="formSuccess" style="display:none;text-align:center;padding:2.5rem 0;">
+          <div style="font-family:'Instrument Serif',serif;font-size:2.2rem;margin-bottom:.75rem;">Received.</div>
+          <p style="color:var(--text-muted);font-size:.92rem;line-height:1.6;">We will review your commercial presence and deliver your audit within 48 hours.</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ 3. SERVICES ═══ -->
-<section id="services">
-  <div class="section-label" data-aos="fade-up">Services</div>
-  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Commercial credibility infrastructure</h2>
-  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">We rebuild the commercial materials that determine whether buyers trust you before the first conversation happens.</p>
-  <div class="services-grid">
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="0">
-      <div class="svc-label">Fast Entry</div>
-      <div class="svc-name">Capability Statement Redesign</div>
-      <div class="svc-desc">The document you attach to every bid, send to every prospect, and share with every partner. If it does not command trust in 10 seconds, it is costing you opportunities every week. We rebuild it from the ground up.</div>
-      <ul class="svc-items">
-        <li>Full content restructure</li>
-        <li>Technical English copywriting</li>
-        <li>Professional layout and design</li>
-        <li>Certifications and project highlights</li>
-        <li>Print-ready and digital formats</li>
-        <li>Delivered in 3-5 business days</li>
-      </ul>
-      <a href="#contact" class="svc-cta">Get Started</a>
-    </div>
-    <div class="svc-card primary" data-aos="fade-up" data-aos-delay="120">
-      <div class="svc-label">Full Rebuild</div>
-      <div class="svc-name">Industrial Authority Pack</div>
-      <div class="svc-desc">A complete overhaul of how the market sees your company. We rebuild your digital presence, commercial materials, and project documentation so buyers see a tier-one supplier on first contact.</div>
-      <ul class="svc-items">
-        <li>Complete digital presence rebuild</li>
-        <li>Technical copy and service architecture</li>
-        <li>Project portfolio system</li>
-        <li>Capability statement</li>
-        <li>Trust signal optimization</li>
-        <li>Inquiry funnel and contact system</li>
-        <li>Delivered in 10-14 business days</li>
-      </ul>
-      <a href="#contact" class="svc-cta">Get Started</a>
-    </div>
-    <div class="svc-card" data-aos="fade-up" data-aos-delay="240">
-      <div class="svc-label">Bid Support</div>
-      <div class="svc-name">Bid Credibility Pack</div>
-      <div class="svc-desc">Your bid materials should close deals, not lose them. We build the commercial collateral that gives procurement teams confidence in your capability before you walk into the room.</div>
-      <ul class="svc-items">
-        <li>Project case studies</li>
-        <li>Experience matrices</li>
-        <li>QA/HSE presentation package</li>
-        <li>Project data sheets</li>
-        <li>Proposal support materials</li>
-        <li>Prequalification document support</li>
-      </ul>
-      <a href="#contact" class="svc-cta">Get Started</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ 4. PROCESS ═══ -->
-<section id="process">
-  <div class="section-label" data-aos="fade-up">How It Works</div>
-  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">From audit to authority</h2>
-  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">No committees. No revision cycles that drag for months. We handle the rebuild so you focus on execution.</p>
-  <div class="process-steps">
-    <div class="step" data-aos="fade-up" data-aos-delay="0">
-      <div class="step-num">01</div>
-      <div class="step-title">We score your commercial presence</div>
-      <div class="step-desc">We audit your digital presence, capability materials, and project documentation across 10 trust dimensions. You receive a clear breakdown of where buyers lose confidence and what to fix first.</div>
-    </div>
-    <div class="step" data-aos="fade-up" data-aos-delay="120">
-      <div class="step-num">02</div>
-      <div class="step-title">We rebuild what matters</div>
-      <div class="step-desc">Technical English copy, professional design, structured project portfolios, capability architecture, and commercial positioning. Every decision tied to how buyers evaluate industrial contractors.</div>
-    </div>
-    <div class="step" data-aos="fade-up" data-aos-delay="240">
-      <div class="step-num">03</div>
-      <div class="step-title">You deploy with confidence</div>
-      <div class="step-desc">Your new commercial presence goes live. Clean handoff, full documentation. Buyers see a tier-one supplier before the first conversation. The gap is closed.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ 5. CONTACT ═══ -->
-<section id="contact">
-  <div class="section-label" data-aos="fade-up">Start Here</div>
-  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Request a Digital Authority Audit</h2>
-  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">We will score your commercial presence across 10 trust dimensions and show you exactly where the gap is. No obligation. No sales pitch. Just a clear picture of where you stand.</p>
-  <div class="contact-section" data-aos="fade-up" data-aos-delay="200">
-    <form id="contactForm" onsubmit="handleSubmit(event)">
-      <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
-      <input type="hidden" name="subject" value="Digital Authority Audit Request — Keysm">
-      <input type="checkbox" name="botcheck" style="display:none;">
-      <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" placeholder="e.g. Ahmed Al-Rashidi" required>
-      </div>
-      <div class="form-group">
-        <label for="company">Company Name</label>
-        <input type="text" id="company" name="company" placeholder="e.g. Gulf Steel Fabrication LLC" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="you@company.com" required>
-      </div>
-      <div class="form-group">
-        <label for="website">Current Website URL <span style="color:var(--text-dim);font-size:0.7rem;text-transform:none;letter-spacing:0;">(if you have one)</span></label>
-        <input type="url" id="website" name="website" placeholder="https://yourcompany.com">
-      </div>
-      <div class="form-group">
-        <label for="sector">Sector</label>
-        <select id="sector" name="sector">
-          <option value="" disabled selected>Select your industry</option>
-          <option value="Steel Fabrication">Steel Fabrication</option>
-          <option value="MEP Contracting">MEP Contracting</option>
-          <option value="General Contracting / EPC">General Contracting / EPC</option>
-          <option value="HVAC / Mechanical">HVAC / Mechanical</option>
-          <option value="Infrastructure / Civil">Infrastructure / Civil</option>
-          <option value="Marine / Offshore">Marine / Offshore</option>
-          <option value="Electrical Contracting">Electrical Contracting</option>
-          <option value="Other Industrial">Other Industrial</option>
-        </select>
-      </div>
-      <button type="submit" class="submit-btn" id="submitBtn">
-        Request Your Audit
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-      </button>
-      <p class="form-note">You will receive a Digital Authority Score with a breakdown across 10 trust dimensions and specific recommendations ranked by impact.</p>
-    </form>
-    <div id="formSuccess" style="display:none;text-align:center;padding:2rem 0;">
-      <div style="font-family:'Instrument Serif',serif;font-size:2rem;margin-bottom:0.75rem;">Received.</div>
-      <p style="color:var(--text-muted);font-size:0.95rem;">We will review your commercial presence and deliver your audit within 48 hours.</p>
-    </div>
-  </div>
-</section>
-
+<!-- ═══ FOOTER ═══ -->
 <footer>
-  <p>&copy; 2026 Keysm — Industrial Authority Consulting</p>
+  <div class="footer-inner">
+    <a href="#" class="footer-logo">keysm<span>.</span></a>
+    <p>&copy; 2026 Keysm — Industrial Authority Consulting</p>
+  </div>
 </footer>
 
-<!-- Custom cursor -->
+<!-- Cursor -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-AOS.init({ duration: 700, easing: 'ease-out', once: true, offset: 60 });
+AOS.init({duration:700,easing:'ease-out',once:true,offset:60});
 
-(function() {
-  var nav = document.querySelector('nav');
-  function onScroll() {
-    nav.classList.toggle('scrolled', window.scrollY > 80);
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
+(function(){
+  var nav=document.querySelector('nav');
+  function onScroll(){nav.classList.toggle('scrolled',window.scrollY>80);}
+  window.addEventListener('scroll',onScroll,{passive:true});
   onScroll();
 })();
 
-async function handleSubmit(e) {
+async function handleSubmit(e){
   e.preventDefault();
-  var form = document.getElementById('contactForm');
-  var btn  = document.getElementById('submitBtn');
-  var originalHTML = btn.innerHTML;
-  btn.innerHTML = 'Sending...';
-  btn.disabled  = true;
-
-  var data = Object.fromEntries(new FormData(form));
-  try {
-    var res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(data)
+  var form=document.getElementById('contactForm');
+  var btn=document.getElementById('submitBtn');
+  var orig=btn.innerHTML;
+  btn.innerHTML='Sending...';btn.disabled=true;
+  var data=Object.fromEntries(new FormData(form));
+  try{
+    var res=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(data)
     });
-    if (res.status === 200) {
-      form.style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-    } else {
-      btn.innerHTML = 'Error — try again';
-      btn.disabled = false;
-      setTimeout(function() { btn.innerHTML = originalHTML; }, 3000);
+    if(res.status===200){
+      form.style.display='none';
+      document.getElementById('formSuccess').style.display='block';
+    }else{
+      btn.innerHTML='Error — try again';btn.disabled=false;
+      setTimeout(function(){btn.innerHTML=orig;},3000);
     }
-  } catch (err) {
-    btn.innerHTML = 'Error — try again';
-    btn.disabled = false;
-    setTimeout(function() { btn.innerHTML = originalHTML; }, 3000);
+  }catch(err){
+    btn.innerHTML='Error — try again';btn.disabled=false;
+    setTimeout(function(){btn.innerHTML=orig;},3000);
   }
 }
 
-(function() {
-  if (window.innerWidth <= 768) return;
-  var dot  = document.getElementById('cursorDot');
-  var ring = document.getElementById('cursorRing');
-  var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-  document.addEventListener('mousemove', function(e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    dot.style.left = mouseX + 'px';
-    dot.style.top  = mouseY + 'px';
+(function(){
+  if(window.innerWidth<=768)return;
+  var dot=document.getElementById('cursorDot');
+  var ring=document.getElementById('cursorRing');
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX;my=e.clientY;
+    dot.style.left=mx+'px';dot.style.top=my+'px';
   });
-
-  document.querySelectorAll('a, button').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { ring.classList.add('hovered'); });
-    el.addEventListener('mouseleave', function() { ring.classList.remove('hovered'); });
+  document.querySelectorAll('a,button').forEach(function(el){
+    el.addEventListener('mouseenter',function(){ring.classList.add('hovered');});
+    el.addEventListener('mouseleave',function(){ring.classList.remove('hovered');});
   });
-
-  function animateRing() {
-    ringX += (mouseX - ringX) * 0.12;
-    ringY += (mouseY - ringY) * 0.12;
-    ring.style.left = ringX + 'px';
-    ring.style.top  = ringY + 'px';
-    requestAnimationFrame(animateRing);
+  function loop(){
+    rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
   }
-  animateRing();
+  loop();
 })();
 </script>
 </body>
