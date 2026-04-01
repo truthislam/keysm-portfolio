@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keysm — Web Design That Converts</title>
-<meta name="description" content="Clean, modern websites for small businesses. Design, build, and launch — handled for you.">
+<title>Keysm — Industrial Authority Consulting</title>
+<meta name="description" content="We help Gulf industrial contractors close the gap between what they can do and how the market sees them. Capability statements, digital authority, bid-readiness.">
+<meta property="og:image" content="images/og-preview.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://keysm-portfolio.vercel.app">
+<meta property="og:title" content="Keysm — Industrial Authority Consulting for Gulf Contractors">
+<link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 <style>
   :root {
     --bg: #0a0a0a;
@@ -30,13 +36,25 @@
   }
   ::selection { background:var(--accent); color:var(--bg); }
 
+  /* Hide default cursor on desktop */
+  @media(min-width:769px) {
+    body, a, button { cursor:none; }
+  }
+
+  /* ── NAV ── */
   nav {
     position:fixed; top:0; left:0; right:0; z-index:100;
     padding:1.25rem 2rem;
     display:flex; justify-content:space-between; align-items:center;
+    background:transparent;
+    backdrop-filter:none;
+    border-bottom:1px solid transparent;
+    transition:background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+  }
+  nav.scrolled {
     background:rgba(10,10,10,0.88);
     backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border);
+    border-bottom-color:var(--border);
   }
   .logo {
     font-family:'Instrument Serif',serif;
@@ -51,9 +69,35 @@
   }
   .nav-links a:hover { color:var(--text); }
 
+  /* ── HERO ── */
   .hero {
-    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
-    padding:8rem 2rem 4rem; max-width:1100px; margin:0 auto;
+    position:relative; overflow:hidden;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .hero-video {
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover; z-index:0;
+  }
+  .hero-gradient {
+    position:absolute; inset:0; z-index:1;
+    background:linear-gradient(
+      to right,
+      rgba(10,10,10,0.88) 0%,
+      rgba(10,10,10,0.65) 55%,
+      rgba(10,10,10,0.25) 100%
+    );
+  }
+  .hero-fade-bottom {
+    position:absolute; bottom:0; left:0; right:0; z-index:1;
+    height:240px;
+    background:linear-gradient(to bottom, transparent, #0a0a0a);
+  }
+  .hero-content {
+    position:relative; z-index:2;
+    padding:8rem 2rem 4rem;
+    max-width:1100px; margin:0 auto; width:100%;
   }
   .hero-label {
     font-size:0.8rem; text-transform:uppercase; letter-spacing:0.15em;
@@ -99,46 +143,36 @@
     margin-bottom:3.5rem; font-size:1.05rem; line-height:1.7;
   }
 
-  /* BEFORE/AFTER */
+  /* ── BEFORE/AFTER ── */
   .before-after {
     border-top:1px solid var(--border);
     border-bottom:1px solid var(--border);
     padding:5rem 2rem;
   }
-  .before-after-inner {
-    max-width:1100px; margin:0 auto;
-  }
+  .before-after-inner { max-width:1100px; margin:0 auto; }
   .ba-grid {
     display:grid; grid-template-columns:1fr 1fr; gap:2rem;
     margin-top:2rem;
   }
   .ba-card {
     border-radius:var(--radius); overflow:hidden;
-    border:1px solid var(--border);
-    position:relative;
+    border:1px solid var(--border); position:relative;
   }
   .ba-label {
     position:absolute; top:1rem; left:1rem;
     font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em;
-    font-weight:700; padding:0.35rem 0.85rem; border-radius:100px;
-    z-index:2;
+    font-weight:700; padding:0.35rem 0.85rem; border-radius:100px; z-index:2;
   }
-  .ba-label.before {
-    background:#ff4444; color:#fff;
-  }
-  .ba-label.after {
-    background:var(--accent); color:var(--bg);
-  }
+  .ba-label.before { background:#ff4444; color:#fff; }
+  .ba-label.after  { background:var(--accent); color:var(--bg); }
   .ba-card img {
     width:100%; display:block; aspect-ratio:16/10; object-fit:cover; object-position:top;
   }
-
   .ba-caption {
-    font-size:0.85rem; color:var(--text-muted); margin-top:0.75rem;
-    line-height:1.5;
+    font-size:0.85rem; color:var(--text-muted); margin-top:0.75rem; line-height:1.5;
   }
 
-  /* PROJECTS */
+  /* ── PROJECTS ── */
   .project {
     display:grid; grid-template-columns:1fr 1fr;
     gap:2.5rem; align-items:center;
@@ -147,7 +181,7 @@
   }
   .project:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
   .project.reverse .project-images { order:2; }
-  .project.reverse .project-text { order:1; }
+  .project.reverse .project-text  { order:1; }
 
   .project-images { display:flex; flex-direction:column; gap:0.75rem; }
   .project-images img {
@@ -179,10 +213,61 @@
   .project-link:hover { gap:0.7rem; }
   .project-link svg { width:14px; height:14px; }
 
-  /* ABOUT */
+  /* ── SERVICES ── */
+  .services-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;
+  }
+  .service-card {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius); padding:2.25rem;
+    display:flex; flex-direction:column; transition:border-color 0.3s;
+  }
+  .service-card:hover { border-color:#333; }
+  .service-card.featured { border-color:var(--accent); position:relative; }
+  .service-card.featured::before {
+    content:'Flagship'; position:absolute; top:-0.7rem; left:2rem;
+    background:var(--accent); color:var(--bg);
+    font-size:0.7rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.08em; padding:0.25rem 0.75rem; border-radius:100px;
+  }
+  .service-tier {
+    font-size:0.8rem; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--text-muted); margin-bottom:1rem; font-weight:500;
+  }
+  .service-name {
+    font-family:'Instrument Serif',serif; font-size:1.5rem;
+    line-height:1.2; margin-bottom:0.75rem;
+  }
+  .service-desc {
+    font-size:0.9rem; color:var(--text-muted); line-height:1.7;
+    margin-bottom:1.5rem; flex:1;
+  }
+  .service-includes {
+    list-style:none; margin-bottom:2rem;
+    border-top:1px solid var(--border); padding-top:1rem;
+  }
+  .service-includes li {
+    padding:0.4rem 0; font-size:0.85rem; color:var(--text-muted);
+    display:flex; align-items:center; gap:0.6rem;
+  }
+  .service-includes li::before {
+    content:'\2713'; color:var(--accent); font-weight:700; font-size:0.8rem;
+  }
+  .service-cta {
+    display:block; text-align:center; padding:0.85rem 1.5rem;
+    border-radius:100px; text-decoration:none; font-weight:600; font-size:0.9rem;
+    transition:all 0.2s; border:1px solid var(--border); color:var(--text);
+    background:transparent; margin-top:auto;
+  }
+  .service-cta:hover { background:var(--text); color:var(--bg); border-color:var(--text); }
+  .service-card.featured .service-cta {
+    background:var(--accent); color:var(--bg); border-color:var(--accent);
+  }
+  .service-card.featured .service-cta:hover {
+    background:#d4f57a; box-shadow:0 4px 20px rgba(201,240,107,0.25);
+  }
 
-
-  /* PROCESS */
+  /* ── PROCESS ── */
   .process-steps {
     display:grid; grid-template-columns:repeat(3,1fr);
     gap:2rem; margin-top:2rem;
@@ -194,57 +279,7 @@
   .step-title { font-weight:600; font-size:1rem; margin-bottom:0.5rem; }
   .step-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
 
-  /* PRICING */
-  .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
-  .price-card {
-    background:var(--bg-card); border:1px solid var(--border);
-    border-radius:var(--radius); padding:2.25rem;
-    display:flex; flex-direction:column; transition:border-color 0.3s;
-  }
-  .price-card.featured { border-color:var(--accent); position:relative; }
-  .price-card.featured::before {
-    content:'Most Popular'; position:absolute; top:-0.7rem; left:2rem;
-    background:var(--accent); color:var(--bg);
-    font-size:0.7rem; font-weight:700; text-transform:uppercase;
-    letter-spacing:0.08em; padding:0.25rem 0.75rem; border-radius:100px;
-  }
-  .price-card:hover { border-color:#333; }
-  .price-tier {
-    font-size:0.8rem; text-transform:uppercase; letter-spacing:0.12em;
-    color:var(--text-muted); margin-bottom:1rem; font-weight:500;
-  }
-  .price-amount {
-    font-family:'Instrument Serif',serif; font-size:3rem;
-    line-height:1; margin-bottom:0.25rem;
-  }
-  .price-amount span {
-    font-size:1rem; color:var(--text-muted); font-family:'DM Sans',sans-serif;
-  }
-  .price-sub { font-size:0.85rem; color:var(--accent-dim); margin-bottom:1.5rem; }
-  .price-features { list-style:none; margin-bottom:2rem; flex:1; }
-  .price-features li {
-    padding:0.5rem 0; font-size:0.9rem; color:var(--text-muted);
-    border-bottom:1px solid #1a1a1a;
-    display:flex; align-items:center; gap:0.6rem;
-  }
-  .price-features li::before {
-    content:'\2713'; color:var(--accent); font-weight:700; font-size:0.8rem;
-  }
-  .price-cta {
-    display:block; text-align:center; padding:0.85rem 1.5rem;
-    border-radius:100px; text-decoration:none; font-weight:600; font-size:0.9rem;
-    transition:all 0.2s; border:1px solid var(--border); color:var(--text);
-    background:transparent;
-  }
-  .price-cta:hover { background:var(--text); color:var(--bg); border-color:var(--text); }
-  .price-card.featured .price-cta {
-    background:var(--accent); color:var(--bg); border-color:var(--accent);
-  }
-  .price-card.featured .price-cta:hover {
-    background:#d4f57a; box-shadow:0 4px 20px rgba(201,240,107,0.25);
-  }
-
-  /* CONTACT — simplified */
+  /* ── CONTACT ── */
   .contact-section {
     background:var(--bg-card); border:1px solid var(--border);
     border-radius:var(--radius); padding:3rem; max-width:640px;
@@ -255,13 +290,16 @@
     letter-spacing:0.1em; color:var(--text-muted);
     margin-bottom:0.5rem; font-weight:500;
   }
-  .form-group input {
+  .form-group input, .form-group select {
     width:100%; padding:0.85rem 1rem; background:var(--bg);
     border:1px solid var(--border); border-radius:8px;
     color:var(--text); font-family:'DM Sans',sans-serif;
     font-size:0.95rem; outline:none; transition:border-color 0.2s;
+    -webkit-appearance:none; appearance:none;
   }
-  .form-group input:focus { border-color:var(--accent); }
+  .form-group input:focus, .form-group select:focus { border-color:var(--accent); }
+  .form-group select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 1rem center; padding-right:2.5rem; }
+  .form-group select option { background:var(--bg); color:var(--text); }
   .submit-btn {
     display:inline-flex; align-items:center; gap:0.5rem;
     background:var(--accent); color:var(--bg); border:none;
@@ -282,54 +320,94 @@
   }
   footer p { font-size:0.8rem; color:var(--text-muted); }
 
-  /* TESTIMONIAL */
+  /* ── TESTIMONIAL ── */
   .testimonial-strip {
     border-bottom:1px solid var(--border);
-    padding:3rem 2rem;
-    text-align:center;
+    padding:3rem 2rem; text-align:center;
   }
-  .testimonial-inner {
-    max-width:700px; margin:0 auto;
-  }
+  .testimonial-inner { max-width:700px; margin:0 auto; }
   .testimonial-quote {
     font-family:'Instrument Serif',serif;
     font-size:1.5rem; font-style:italic;
-    line-height:1.5; margin-bottom:1rem;
+    line-height:1.5; margin-bottom:1rem; color:var(--text);
+  }
+  .testimonial-attr { font-size:0.85rem; color:var(--text-muted); }
+
+  /* ── INDUSTRIES ── */
+  .industries-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1rem;
+  }
+  .ind-item {
+    background:rgba(201,240,107,0.06);
+    border:1px solid #1e1e1e;
+    border-radius:10px;
+    padding:1rem 1.25rem;
+    font-size:0.9rem;
+    color:#888888;
+    text-align:center;
+    transition:border-color 0.3s, color 0.3s;
+  }
+  .ind-item:hover {
+    border-color:var(--accent);
     color:var(--text);
   }
-  .testimonial-attr {
-    font-size:0.85rem; color:var(--text-muted);
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor-dot {
+    width:12px; height:12px;
+    background:var(--accent); border-radius:50%;
+    position:fixed; pointer-events:none; z-index:9999;
+    transform:translate(-50%,-50%);
+    transition:width 0.15s, height 0.15s, opacity 0.2s;
   }
-  .testimonial-placeholder {
-    font-size:0.85rem; color:#333;
-    font-style:italic;
+  .cursor-ring {
+    width:36px; height:36px;
+    border:1.5px solid rgba(201,240,107,0.7);
+    border-radius:50%;
+    position:fixed; pointer-events:none; z-index:9998;
+    transform:translate(-50%,-50%);
+    transition:width 0.2s ease, height 0.2s ease, border-color 0.2s;
+  }
+  .cursor-ring.hovered {
+    width:52px; height:52px;
+    border-color:var(--accent);
   }
 
+  /* ── RESPONSIVE ── */
   @media(max-width:768px) {
     nav { padding:1rem 1.25rem; }
     .nav-links { display:none; }
-    .hero { padding:7rem 1.25rem 3rem; }
+    .hero-content { padding:7rem 1.25rem 3rem; }
     section { padding:4rem 1.25rem; }
     .project { grid-template-columns:1fr; gap:1.5rem; }
     .project.reverse .project-images { order:1; }
-    .project.reverse .project-text { order:2; }
-    .pricing-grid { grid-template-columns:1fr; }
+    .project.reverse .project-text  { order:2; }
+    .services-grid { grid-template-columns:1fr; }
     .process-steps { grid-template-columns:1fr; }
     .contact-section { padding:2rem 1.5rem; }
     .ba-grid { grid-template-columns:1fr; }
     .before-after { padding:3rem 1.25rem; }
+    .cursor-dot, .cursor-ring { display:none; }
+    body, a, button { cursor:auto; }
+    .industries-grid { grid-template-columns:repeat(2,1fr); }
+  }
+  @media(max-width:480px) {
+    .industries-grid { grid-template-columns:1fr; }
   }
 
+  /* ── HERO ENTRANCE ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(24px); }
-    to { opacity:1; transform:translateY(0); }
+    to   { opacity:1; transform:translateY(0); }
   }
-  .hero-label,.hero h1,.hero p,.hero-cta {
+  .hero-label, .hero h1, .hero p, .hero-cta {
     animation:fadeUp 0.7s ease-out both;
   }
-  .hero h1 { animation-delay:0.1s; }
-  .hero p { animation-delay:0.2s; }
-  .hero-cta { animation-delay:0.3s; }
+  .hero h1   { animation-delay:0.1s; }
+  .hero p    { animation-delay:0.2s; }
+  .hero-cta  { animation-delay:0.3s; }
 </style>
 </head>
 <body>
@@ -337,239 +415,352 @@
 <nav>
   <a href="#" class="logo">keysm<span>.</span></a>
   <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#proof">Proof</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#industries">Industries</a></li>
     <li><a href="#process">Process</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
+<!-- ═══════════════ HERO ═══════════════ -->
 <header class="hero">
-  <div class="hero-label">Web Design for Small Businesses</div>
-  <h1>Your website is losing you <em>customers</em></h1>
-  <p>I take cluttered, outdated websites and turn them into clean, modern pages that actually convert visitors into paying clients. Design, build, launch. All handled.</p>
-  <a href="#contact" class="hero-cta">
-    Get a Free Mockup
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-  </a>
+  <video class="hero-video" autoplay muted loop playsinline poster="images/hero-poster.jpg">
+    <source src="videos/hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero-gradient"></div>
+  <div class="hero-fade-bottom"></div>
+  <div class="hero-content">
+    <div class="hero-label">Industrial Authority Consulting</div>
+    <h1>Your execution is tier-one. Your presence <em>is not.</em></h1>
+    <p>Gulf industrial contractors lose bids, miss prequalifications, and get filtered out silently because their commercial presence does not match their execution capability. We fix that gap.</p>
+    <a href="#contact" class="hero-cta">
+      Request a Digital Authority Audit
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+    </a>
+  </div>
 </header>
 
-<!-- BEFORE / AFTER -->
+<!-- ═══════════════ BEFORE / AFTER ═══════════════ -->
 <div class="before-after">
   <div class="before-after-inner">
-    <div class="section-label">Before &amp; After</div>
-    <h2 class="section-title">Same business. Different first impression.</h2>
+    <div class="section-label" data-aos="fade-up">The Gap</div>
+    <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Same contractor. Different level of trust.</h2>
     <div class="ba-grid">
-      <div>
+      <div data-aos="fade-right" data-aos-delay="150">
         <div class="ba-card">
           <span class="ba-label before">Before</span>
-          <img src="images/project-1.png" alt="GeminiTax old WordPress site" style="width:100%;display:block;">
+          <img src="images/before-upengg.png" alt="Industrial contractor before authority rebuild - outdated 2008 presence">
         </div>
-        <p class="ba-caption">Cluttered WordPress template. 8-tab navigation. Stock imagery. Cookie consent popup. Walls of text.</p>
+        <p class="ba-caption">Stock imagery. Broken English. No project documentation. No certifications visible. Procurement teams see this and move on without a second thought.</p>
       </div>
-      <div>
+      <div data-aos="fade-left" data-aos-delay="200">
         <div class="ba-card">
           <span class="ba-label after">After</span>
-          <img src="images/project-2.png" alt="GeminiTax redesigned by Keysm">
+          <img src="images/after-upengg.png" alt="Industrial contractor after Keysm authority rebuild - tier-one presentation">
         </div>
-        <p class="ba-caption">Clean hierarchy. Clear CTA. Trust signals up front. Professional in 3 seconds.</p>
+        <p class="ba-caption">Technical authority on display. Project portfolio with real documentation. Capability architecture buyers can scan in seconds. Looks like the tier-one supplier they actually are.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ABOUT STRIP -->
-
-
-<!-- TESTIMONIAL (placeholder until Saad responds) -->
+<!-- TESTIMONIAL (placeholder until first Gulf client) -->
 <!--
 <div class="testimonial-strip">
   <div class="testimonial-inner">
-    <p class="testimonial-quote">"Your testimonial from Saad goes here."</p>
-    <p class="testimonial-attr">— Saad, Founder of Gemini Accounting</p>
+    <p class="testimonial-quote">"Testimonial goes here."</p>
+    <p class="testimonial-attr">— Name, Title, Company</p>
   </div>
 </div>
 -->
 
-<!-- PORTFOLIO -->
-<section id="work">
-  <div class="section-label">Selected Work</div>
-  <h2 class="section-title">Recent Projects</h2>
-  <p class="section-desc">Every project starts with a messy, underperforming site and ends with something clean, fast, and built to convert.</p>
+<!-- ═══════════════ PROOF / PORTFOLIO ═══════════════ -->
+<section id="proof">
+  <div class="section-label" data-aos="fade-up">Authority Rebuilds</div>
+  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Companies we repositioned</h2>
+  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">Each project started with a contractor whose commercial presence was silently costing them trust. We rebuilt how the market sees them.</p>
 
-  <div class="project reverse">
-    <div class="project-images">
-      <img src="images/project-3.png" alt="Academic Coaching Cairo - PISA data">
+  <div class="project">
+    <div class="project-images" data-aos="fade-right">
+      <img src="images/project-gulf-1a.png" alt="General Contracting / EPC authority rebuild">
       <div class="img-row">
-        <img src="images/project-4.png" alt="Academic Coaching Cairo - process">
-        <img src="images/project-5.png" alt="Academic Coaching Cairo - values">
+        <img src="images/project-gulf-1b.png" alt="GULFMEC project detail">
+        <img src="images/project-gulf-1c.png" alt="GULFMEC project detail">
       </div>
     </div>
-    <div class="project-text">
-      <span class="project-tag">Education / Tutoring</span>
-      <h3 class="project-name">Academic Coaching Cairo</h3>
-      <p class="project-desc">Landing page for a tutoring service targeting expat families. Animated PISA data visualizations, clear three-step process, and values-driven positioning that speaks directly to parents.</p>
+    <div class="project-text" data-aos="fade-left" data-aos-delay="100">
+      <span class="project-tag">General Contracting / EPC</span>
+      <h3 class="project-name">GULFMEC Trading & Contracting — Qatar</h3>
+      <p class="project-desc">Full commercial presence rebuild for an ISO triple-certified engineering services company operating across Qatar, Kuwait, and India. Replaced an outdated text-heavy presentation with a structured authority platform featuring animated capability architecture, ISO certification visibility, multi-division service positioning, and an enterprise inquiry system. Buyers now see a tier-one operator on first contact.</p>
+      <a href="projects/gulfmec/index.html" class="project-link">View Live <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></a>
+    </div>
+  </div>
+
+  <div class="project reverse">
+    <div class="project-images" data-aos="fade-left">
+      <img src="images/project-gulf-2a.png" alt="EPC / Steel Fabrication authority rebuild">
+      <div class="img-row">
+        <img src="images/project-gulf-2b.png" alt="SPARKTECH project detail">
+        <img src="images/project-gulf-2c.png" alt="SPARKTECH project detail">
+      </div>
+    </div>
+    <div class="project-text" data-aos="fade-right" data-aos-delay="100">
+      <span class="project-tag">EPC / Steel Fabrication</span>
+      <h3 class="project-name">SPARKTECH Industrial Services — Bahrain</h3>
+      <p class="project-desc">Authority rebuild for a turnkey EPC and steel fabrication company serving Samsung Engineering, Tatweer Petroleum, JGC, and Technip. Restructured cluttered content into a clear capability architecture with EPC service pillars, fabrication portfolio, animated client trust signals, and an enterprise-grade inquiry system. Commercial presentation now matches execution capability.</p>
+      <a href="projects/sparktech/index.html" class="project-link">View Live <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></a>
     </div>
   </div>
 
   <div class="project">
-    <div class="project-images">
-      <img src="images/project-6.png" alt="NurHabits platform">
-      <img src="images/project-7.png" alt="NurHabits features">
+    <div class="project-images" data-aos="fade-right">
+      <img src="images/project-gulf-3a.png" alt="Structural Steel / Metal Fabrication authority rebuild">
+      <div class="img-row">
+        <img src="images/project-gulf-3b.png" alt="UP-ENGG project detail">
+        <img src="images/project-gulf-3c.png" alt="UP-ENGG project detail">
+      </div>
     </div>
-    <div class="project-text">
-      <span class="project-tag">Web Platform</span>
-      <h3 class="project-name">NurHabits.com</h3>
-      <p class="project-desc">Islamic self-development platform designed and built from scratch. Homepage, content library, email capture system, and responsive design. Dark theme with intentional typography and clear content hierarchy.</p>
+    <div class="project-text" data-aos="fade-left" data-aos-delay="100">
+      <span class="project-tag">Structural Steel / Metal Fabrication</span>
+      <h3 class="project-name">UP-ENGG (United Precision Engineering) — Kuwait</h3>
+      <p class="project-desc">Complete commercial repositioning for a mechanical construction and steel fabrication company serving Kuwait's top EPC contractors. Replaced a 2008-era presence with a modern authority platform: 6-card capability showcase, surface preparation specialization, bilingual support, animated project metrics, and a professional tender inquiry system. Buyers now see credibility before they see a proposal.</p>
+      <a href="projects/upengg/index.html" class="project-link">View Live <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></a>
     </div>
   </div>
 </section>
 
+<!-- ═══════════════ INDUSTRIES ═══════════════ -->
+<section id="industries">
+  <div class="section-label" data-aos="fade-up">Sectors</div>
+  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Built for companies that build</h2>
+  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">We work exclusively with industrial and construction contractors across the Gulf. If your company fabricates, installs, constructs, or maintains, we understand your buyers.</p>
+  <div class="industries-grid">
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="0">Structural Steel & Fabrication</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="50">General Contracting & EPC</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="100">HVAC & Mechanical</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="150">MEP (Mechanical, Electrical, Plumbing)</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="200">Industrial Subcontracting</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="250">Infrastructure & Civil Works</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="300">Marine & Offshore</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="350">Industrial Equipment & Machinery</div>
+    <div class="ind-item" data-aos="fade-up" data-aos-delay="400">Electrical Contracting</div>
+  </div>
+</section>
+
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<section id="services">
+  <div class="section-label" data-aos="fade-up">Services</div>
+  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Commercial credibility infrastructure</h2>
+  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">Not marketing. Not branding. We rebuild the commercial materials that determine whether buyers trust you before the first conversation.</p>
+  <div class="services-grid">
+    <div class="service-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="service-tier">Fast Entry</div>
+      <div class="service-name">Capability Statement Redesign</div>
+      <div class="service-desc">The document you send to every prospect, attach to every bid, and share with every partner. If it does not command trust in 10 seconds, it is costing you opportunities every week. We rebuild it from the ground up.</div>
+      <ul class="service-includes">
+        <li>Full capability statement restructure</li>
+        <li>Technical English copywriting</li>
+        <li>Professional layout and design</li>
+        <li>Certifications and project highlights</li>
+        <li>Print-ready and digital formats</li>
+        <li>Delivered in 3-5 business days</li>
+      </ul>
+      <a href="#contact" class="service-cta">Get Started</a>
+    </div>
+    <div class="service-card featured" data-aos="fade-up" data-aos-delay="120">
+      <div class="service-tier">Full Rebuild</div>
+      <div class="service-name">Industrial Authority Pack</div>
+      <div class="service-desc">A complete overhaul of how the market sees your company. We rebuild your digital presence, commercial materials, and project documentation so buyers see a tier-one supplier on first contact. This is how you close the credibility gap.</div>
+      <ul class="service-includes">
+        <li>Full digital presence rebuild</li>
+        <li>Technical copy and service architecture</li>
+        <li>Project portfolio system</li>
+        <li>Capability statement PDF</li>
+        <li>Trust signal optimization</li>
+        <li>Inquiry funnel and contact system</li>
+        <li>Delivered in 10-14 business days</li>
+      </ul>
+      <a href="#contact" class="service-cta">Get Started</a>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="240">
+      <div class="service-tier">Bid Support</div>
+      <div class="service-name">Bid Credibility Pack</div>
+      <div class="service-desc">Your bid materials should close deals, not lose them. We build the commercial collateral that gives procurement teams confidence in your capability before you walk into the room.</div>
+      <ul class="service-includes">
+        <li>Project case studies</li>
+        <li>Bid visuals and experience matrices</li>
+        <li>QA/HSE presentation package</li>
+        <li>Project data sheets</li>
+        <li>Proposal support materials</li>
+        <li>Prequalification document support</li>
+      </ul>
+      <a href="#contact" class="service-cta">Get Started</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROCESS ═══════════════ -->
 <section id="process">
-  <div class="section-label">How It Works</div>
-  <h2 class="section-title">Simple. Fast. Done.</h2>
-  <p class="section-desc">No committees. No revisions that drag for months. I handle everything so you don't have to.</p>
+  <div class="section-label" data-aos="fade-up">How It Works</div>
+  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">From audit to authority</h2>
+  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">No committees. No revision cycles that drag for months. We handle the rebuild so you can focus on execution.</p>
   <div class="process-steps">
-    <div class="step">
+    <div class="step" data-aos="fade-up" data-aos-delay="0">
       <div class="step-num">01</div>
-      <div class="step-title">You show me the problem</div>
-      <div class="step-desc">Send me your current site. Tell me what's not working. I review it and send you a free mockup of the new design within 48 hours.</div>
+      <div class="step-title">We score your commercial presence</div>
+      <div class="step-desc">We audit your digital presence, capability materials, and project documentation across 10 trust dimensions. You receive a clear breakdown of where buyers lose confidence and what to fix first.</div>
     </div>
-    <div class="step">
+    <div class="step" data-aos="fade-up" data-aos-delay="120">
       <div class="step-num">02</div>
-      <div class="step-title">I build it</div>
-      <div class="step-desc">Once you approve the mockup and pay, I build the full site. Fast, clean, mobile-ready. Average delivery: 5-7 days.</div>
+      <div class="step-title">We rebuild what matters</div>
+      <div class="step-desc">Technical English copy, professional design, structured project portfolios, capability architecture, and commercial positioning. Every decision tied to how buyers evaluate industrial contractors.</div>
     </div>
-    <div class="step">
+    <div class="step" data-aos="fade-up" data-aos-delay="240">
       <div class="step-num">03</div>
-      <div class="step-title">You go live</div>
-      <div class="step-desc">I connect your domain, deploy everything, and hand you the keys. Optional ongoing maintenance if you want it.</div>
+      <div class="step-title">You deploy with confidence</div>
+      <div class="step-desc">Your new commercial presence goes live. We hand off everything with clean documentation. Buyers see a tier-one supplier before the first conversation. The gap is closed.</div>
     </div>
   </div>
 </section>
 
-<section id="pricing">
-  <div class="section-label">Pricing</div>
-  <h2 class="section-title">Transparent. No surprises.</h2>
-  <p class="section-desc">Pick the plan that fits. Every tier includes a complete website redesign built from scratch.</p>
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-tier">Starter</div>
-      <div class="price-amount">$350 <span>upfront</span></div>
-      <div class="price-sub">+ $50/month maintenance</div>
-      <ul class="price-features">
-        <li>Full website redesign</li>
-        <li>Mobile responsive</li>
-        <li>Domain connection</li>
-        <li>Hosting managed for you</li>
-        <li>Monthly updates &amp; fixes</li>
-        <li>5-7 day delivery</li>
-      </ul>
-      <a href="#contact" class="price-cta">Get Started</a>
-    </div>
-    <div class="price-card featured">
-      <div class="price-tier">Professional</div>
-      <div class="price-amount">$500 <span>upfront</span></div>
-      <div class="price-sub">+ $50/month maintenance</div>
-      <ul class="price-features">
-        <li>Everything in Starter</li>
-        <li>Contact form setup</li>
-        <li>SEO basics configured</li>
-        <li>Google Analytics installed</li>
-        <li>2 rounds of revisions</li>
-        <li>Priority support</li>
-      </ul>
-      <a href="#contact" class="price-cta">Get Started</a>
-    </div>
-    <div class="price-card">
-      <div class="price-tier">One &amp; Done</div>
-      <div class="price-amount">$1,000 <span>one-time</span></div>
-      <div class="price-sub">No recurring fees</div>
-      <ul class="price-features">
-        <li>Everything in Professional</li>
-        <li>Full source code delivered</li>
-        <li>Documentation included</li>
-        <li>Domain transfer to you</li>
-        <li>30-day post-launch support</li>
-        <li>You own everything</li>
-      </ul>
-      <a href="#contact" class="price-cta">Get Started</a>
-    </div>
-  </div>
-</section>
-
-<!-- SIMPLIFIED CONTACT -->
+<!-- ═══════════════ CONTACT ═══════════════ -->
 <section id="contact">
-  <div class="section-label">Get In Touch</div>
-  <h2 class="section-title">Let's fix your website</h2>
-  <p class="section-desc">Drop your info and your current site URL. I'll reply within 24 hours with a free mockup. No commitment.</p>
-  <div class="contact-section">
+  <div class="section-label" data-aos="fade-up">Start Here</div>
+  <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Request a Digital Authority Audit</h2>
+  <p class="section-desc" data-aos="fade-up" data-aos-delay="150">Send us your company details. We will score your commercial presence across 10 trust dimensions and show you exactly where the gap is. No commitment. No sales pitch. Just a clear picture of where you stand.</p>
+  <div class="contact-section" data-aos="fade-up" data-aos-delay="200">
     <form id="contactForm" onsubmit="handleSubmit(event)">
       <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
-      <input type="hidden" name="subject" value="New Lead from Keysm Portfolio">
+      <input type="hidden" name="subject" value="Digital Authority Audit Request — Keysm">
       <input type="checkbox" name="botcheck" style="display:none;">
       <div class="form-group">
         <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" placeholder="e.g. Sarah Johnson" required>
+        <input type="text" id="name" name="name" placeholder="e.g. Ahmed Al-Rashidi" required>
+      </div>
+      <div class="form-group">
+        <label for="company">Company Name</label>
+        <input type="text" id="company" name="company" placeholder="e.g. Gulf Steel Fabrication LLC" required>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" placeholder="you@company.com" required>
       </div>
       <div class="form-group">
-        <label for="website">Current Website URL <span style="color:#555;font-size:0.7rem;text-transform:none;letter-spacing:0;">(optional)</span></label>
-        <input type="url" id="website" name="website" placeholder="https://yoursite.com">
+        <label for="website">Current Website URL <span style="color:#555;font-size:0.7rem;text-transform:none;letter-spacing:0;">(if you have one)</span></label>
+        <input type="url" id="website" name="website" placeholder="https://yourcompany.com">
+      </div>
+      <div class="form-group">
+        <label for="sector">Sector</label>
+        <select id="sector" name="sector">
+          <option value="" disabled selected>Select your industry</option>
+          <option value="Steel Fabrication">Steel Fabrication</option>
+          <option value="MEP Contracting">MEP Contracting</option>
+          <option value="General Contracting / EPC">General Contracting / EPC</option>
+          <option value="HVAC / Mechanical">HVAC / Mechanical</option>
+          <option value="Infrastructure / Civil">Infrastructure / Civil</option>
+          <option value="Marine / Offshore">Marine / Offshore</option>
+          <option value="Electrical Contracting">Electrical Contracting</option>
+          <option value="Other Industrial">Other Industrial</option>
+        </select>
       </div>
       <button type="submit" class="submit-btn" id="submitBtn">
-        Send
+        Request Your Audit
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
       </button>
-      <p class="form-note">I'll review your site and send a free mockup. No sales pitch.</p>
+      <p class="form-note">You will receive a Digital Authority Score with a breakdown across 10 trust dimensions and specific recommendations ranked by impact.</p>
     </form>
     <div id="formSuccess" style="display:none;text-align:center;padding:2rem 0;">
-      <div style="font-family:'Instrument Serif',serif;font-size:2rem;margin-bottom:0.75rem;">Got it.</div>
-      <p style="color:var(--text-muted);font-size:0.95rem;">I'll review your site and get back to you within 24 hours.</p>
+      <div style="font-family:'Instrument Serif',serif;font-size:2rem;margin-bottom:0.75rem;">Received.</div>
+      <p style="color:var(--text-muted);font-size:0.95rem;">We will review your commercial presence and deliver your audit within 48 hours.</p>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>&copy; 2026 Keysm</p>
+  <p>&copy; 2026 Keysm — Industrial Authority Consulting</p>
 </footer>
 
+<!-- Custom cursor elements -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
+// ── AOS init ──
+AOS.init({ duration: 700, easing: 'ease-out', once: true, offset: 60 });
+
+// ── Nav: transparent → frosted glass after 80px scroll ──
+(function() {
+  var nav = document.querySelector('nav');
+  function onScroll() {
+    nav.classList.toggle('scrolled', window.scrollY > 80);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// ── Contact form ──
 async function handleSubmit(e) {
   e.preventDefault();
-  const form = document.getElementById('contactForm');
-  const btn = document.getElementById('submitBtn');
-  const originalText = btn.innerHTML;
+  var form = document.getElementById('contactForm');
+  var btn  = document.getElementById('submitBtn');
+  var originalHTML = btn.innerHTML;
   btn.innerHTML = 'Sending...';
-  btn.disabled = true;
+  btn.disabled  = true;
 
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData);
-
+  var data = Object.fromEntries(new FormData(form));
   try {
-    const res = await fetch('https://api.web3forms.com/submit', {
+    var res  = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(data)
     });
-    const json = await res.json();
     if (res.status === 200) {
       form.style.display = 'none';
       document.getElementById('formSuccess').style.display = 'block';
     } else {
       btn.innerHTML = 'Error — try again';
-      btn.disabled = false;
-      setTimeout(() => { btn.innerHTML = originalText; }, 3000);
+      btn.disabled  = false;
+      setTimeout(function() { btn.innerHTML = originalHTML; }, 3000);
     }
   } catch (err) {
     btn.innerHTML = 'Error — try again';
-    btn.disabled = false;
-    setTimeout(() => { btn.innerHTML = originalText; }, 3000);
+    btn.disabled  = false;
+    setTimeout(function() { btn.innerHTML = originalHTML; }, 3000);
   }
 }
+
+// ── Custom cursor (desktop only) ──
+(function() {
+  if (window.innerWidth <= 768) return;
+
+  var dot   = document.getElementById('cursorDot');
+  var ring  = document.getElementById('cursorRing');
+  var mouseX = 0, mouseY = 0;
+  var ringX  = 0, ringY  = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top  = mouseY + 'px';
+  });
+
+  document.querySelectorAll('a, button').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { ring.classList.add('hovered'); });
+    el.addEventListener('mouseleave', function() { ring.classList.remove('hovered'); });
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top  = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+})();
 </script>
 </body>
 </html>
