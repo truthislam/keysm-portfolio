@@ -105,11 +105,19 @@ nav.scrolled{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;z-index:0;
 }
-.hero-gradient{
-  position:absolute;inset:0;z-index:1;
-  background:
-    linear-gradient(to right,rgba(10,10,10,.94) 0%,rgba(10,10,10,.72) 50%,rgba(10,10,10,.35) 100%),
-    linear-gradient(to top,rgba(10,10,10,1) 0%,transparent 35%);
+.hero-gradient {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(
+    to right,
+    rgba(10,10,10,0.90) 0%,
+    rgba(10,10,10,0.68) 55%,
+    rgba(10,10,10,0.30) 100%
+  );
+}
+.hero-fade-bottom {
+  position:absolute; bottom:0; left:0; right:0; z-index:1;
+  height:240px;
+  background:linear-gradient(to bottom, transparent, #0a0a0a);
 }
 .hero-content{
   position:relative;z-index:2;
@@ -295,66 +303,53 @@ nav.scrolled{
   background:#d4f57a;box-shadow:0 4px 20px rgba(201,240,107,.25);
 }
 
-/* ═══ CASE STUDY ═══ */
-.case-section{
+/* ═══ CASE STUDY (BEFORE / AFTER RE-INSERTED) ═══ */
+.case-section {
   padding:7rem 0;
   border-top:1px solid var(--border);
 }
-.case-layout{
-  display:grid;grid-template-columns:1fr 1fr;gap:4rem;
-  align-items:center;margin-top:3rem;
+.portfolio-case {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:3rem;
+  transition:border-color 0.3s;
 }
-.case-browser{
-  background:#0e0e0e;border:1px solid var(--border);
-  border-radius:12px;overflow:hidden;
-  box-shadow:0 24px 80px rgba(0,0,0,.4);
+.portfolio-case:hover { border-color:var(--border-light); }
+.case-header {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:2.5rem; border-bottom:1px solid var(--border); padding-bottom:1.5rem;
 }
-.case-browser-bar{
-  display:flex;align-items:center;gap:.5rem;
-  padding:.75rem 1rem;border-bottom:1px solid var(--border);
-  background:rgba(255,255,255,.02);
+.case-meta .label {
+  font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:0.5rem; font-weight:500;
 }
-.case-browser-dot{
-  width:10px;height:10px;border-radius:50%;
-  background:var(--border-light);
+.case-meta h3 {
+  font-family:'Instrument Serif',serif; font-size:2.5rem; line-height:1.1; color:var(--text); margin-bottom:0;
 }
-.case-browser-url{
-  flex:1;text-align:center;
-  font-size:.7rem;color:var(--text-dim);letter-spacing:.02em;
+.case-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:2.5rem;
 }
-.case-browser-img{
-  width:100%;aspect-ratio:16/10;overflow:hidden;position:relative;
+.case-col { display:flex; flex-direction:column; gap:1.25rem; }
+.case-img-wrap {
+  position:relative; overflow:hidden; border-radius:8px;
+  border:1px solid var(--border); aspect-ratio:16/10;
 }
-.case-browser-img img{
-  width:100%;height:100%;object-fit:cover;object-position:top;
+.case-img-wrap img, .case-img-wrap video {
+  width:100%; height:100%; object-fit:cover;
+  transition:transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.case-text .section-label{margin-bottom:.75rem;}
-.case-text .section-title{margin-bottom:1.25rem;}
-.case-desc{
-  color:var(--text-muted);font-size:.95rem;line-height:1.75;
-  margin-bottom:2rem;
+.case-img-wrap:hover img, .case-img-wrap:hover video { transform:scale(1.05); }
+.case-img-label {
+  position:absolute; top:1rem; left:1rem; z-index:2;
+  background:rgba(10,10,10,0.85); backdrop-filter:blur(8px);
+  padding:0.35rem 0.85rem; border-radius:100px;
+  font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em;
+  border:1px solid var(--border);
 }
-.case-desc strong{color:var(--text);font-weight:500;}
-.case-stats{
-  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
-  margin-bottom:2rem;
-}
-.case-stat{
-  background:var(--bg-card);border:1px solid var(--border);
-  border-radius:10px;padding:1.25rem;
-}
-.case-stat-val{
-  font-family:'Instrument Serif',serif;
-  font-size:1.6rem;color:var(--accent);line-height:1;margin-bottom:.35rem;
-}
-.case-stat-label{font-size:.75rem;color:var(--text-muted);line-height:1.4;}
-.case-link{
-  display:inline-flex;align-items:center;gap:.5rem;
-  color:var(--accent);text-decoration:none;font-size:.88rem;
-  font-weight:500;transition:gap .2s;
-}
-.case-link:hover{gap:.75rem;}
-.case-link svg{width:16px;height:16px;}
+.case-before .case-img-label { color:var(--text-muted); }
+.case-after .case-img-label { color:var(--accent); border-color:rgba(201,240,107,0.3); }
+.case-text h4 { font-size:1.05rem; font-weight:600; margin-bottom:0.35rem; color:var(--text); }
+.case-after .case-text h4 { color:var(--accent); }
+.case-text p { font-size:0.95rem; color:var(--text-muted); line-height:1.7; }
 
 /* ═══ PROCESS ═══ */
 .process-section{
@@ -484,8 +479,11 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   .gap-grid{grid-template-columns:1fr;}
   .services-grid{grid-template-columns:1fr;}
   .svc-list{grid-template-columns:1fr;}
-  .case-layout{grid-template-columns:1fr;gap:2.5rem;}
-  .case-stats{grid-template-columns:1fr 1fr;}
+  
+  /* Make sure case grid stacks nicely on mobile */
+  .portfolio-case { padding:1.5rem; }
+  .case-grid { grid-template-columns:1fr; gap:2rem; }
+
   .process-grid{grid-template-columns:1fr;}
   .process-step{border-right:none;border-bottom:1px solid var(--border);padding:2rem 0;}
   .process-step:last-child{border-bottom:none;}
@@ -513,7 +511,6 @@ footer p{font-size:.78rem;color:var(--text-dim);}
 </head>
 <body>
 
-<!-- ═══ NAV ═══ -->
 <nav>
   <a href="#" class="logo">keysm<span>.</span></a>
   <ul class="nav-links">
@@ -525,12 +522,12 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   </ul>
 </nav>
 
-<!-- ═══ 1. HERO ═══ -->
 <header class="hero">
   <video class="hero-video" autoplay muted loop playsinline poster="images/hero-poster.jpg">
     <source src="videos/hero.mp4" type="video/mp4">
   </video>
   <div class="hero-gradient"></div>
+  <div class="hero-fade-bottom"></div>
   <div class="hero-content">
     <div class="hero-label">Industrial Authority Consulting</div>
     <h1>Your execution is tier-one. Your presence <em>is not.</em></h1>
@@ -548,14 +545,12 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   </div>
 </header>
 
-<!-- ═══ TICKER ═══ -->
 <div class="ticker">
   <div class="ticker-track">
     <span>Steel Fabrication</span><span>MEP Contractors</span><span>General Contracting</span><span>HVAC &amp; Mechanical</span><span>Infrastructure</span><span>Marine &amp; Offshore</span><span>Electrical Contracting</span><span>EPC Contractors</span><span>Steel Fabrication</span><span>MEP Contractors</span><span>General Contracting</span><span>HVAC &amp; Mechanical</span><span>Infrastructure</span><span>Marine &amp; Offshore</span><span>Electrical Contracting</span><span>EPC Contractors</span>
   </div>
 </div>
 
-<!-- ═══ 2. CREDIBILITY GAP ═══ -->
 <div class="gap-section" id="gap">
   <div class="wrap">
     <div class="gap-header" data-aos="fade-up">
@@ -591,12 +586,10 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   </div>
 </div>
 
-<!-- ═══ IMAGE BREAK ═══ -->
 <div class="bleed-image">
   <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=1800" alt="Steel fabrication work" loading="lazy">
 </div>
 
-<!-- ═══ 3. SERVICES ═══ -->
 <div class="services-section" id="services">
   <div class="wrap">
     <div class="services-header" data-aos="fade-up">
@@ -662,53 +655,45 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   </div>
 </div>
 
-<!-- ═══ 4. CASE STUDY ═══ -->
 <div class="case-section" id="work">
   <div class="wrap">
-    <div class="case-layout">
-      <div class="case-browser" data-aos="fade-up">
-        <div class="case-browser-bar">
-          <div class="case-browser-dot"></div>
-          <div class="case-browser-dot"></div>
-          <div class="case-browser-dot"></div>
-          <div class="case-browser-url">standard-steel.vercel.app</div>
-        </div>
-        <div class="case-browser-img">
-          <img src="https://api.microlink.io/?url=https://standard-steel.vercel.app&screenshot=true&meta=false&embed=screenshot.url&type=png&viewport.width=1280&viewport.height=800" alt="Standard Steel Fabrication website rebuilt by Keysm" loading="lazy">
+    <div class="section-label" data-aos="fade-up">Portfolio</div>
+    <h2 class="section-title" data-aos="fade-up" data-aos-delay="100">Engineering Case Studies</h2>
+    <p class="section-desc" data-aos="fade-up" data-aos-delay="150">Proof of transformation. We turn passive, outdated digital templates into dominant, tier-one industrial assets.</p>
+
+    <div class="portfolio-case" data-aos="fade-up" data-aos-delay="200">
+      <div class="case-header">
+        <div class="case-meta">
+          <div class="label">Portfolio Piece 01</div>
+          <h3>Standard Steel UAE</h3>
         </div>
       </div>
-      <div class="case-text" data-aos="fade-up" data-aos-delay="100">
-        <div class="section-label">Recent Work</div>
-        <h2 class="section-title">Standard Steel<br><em>Fabrication Co</em></h2>
-        <p class="case-desc">A Dubai-based steel fabricator with 15+ years of execution and zero digital presence to show for it. We rebuilt their entire commercial identity from the ground up. <strong>Capability statement, digital presence, project portfolio, trust infrastructure.</strong> The full Industrial Authority Pack.</p>
-        <div class="case-stats">
-          <div class="case-stat">
-            <div class="case-stat-val">500+</div>
-            <div class="case-stat-label">Projects documented</div>
+      <div class="case-grid">
+        <div class="case-col case-before">
+          <div class="case-img-wrap">
+            <div class="case-img-label">The Credibility Gap (Before)</div>
+            <img src="images/ss-before-demo.webp" alt="Standard Steel UI Before Demo">
           </div>
-          <div class="case-stat">
-            <div class="case-stat-val">ISO 9001</div>
-            <div class="case-stat-label">Compliance positioned</div>
-          </div>
-          <div class="case-stat">
-            <div class="case-stat-val">Full</div>
-            <div class="case-stat-label">Authority Pack delivered</div>
-          </div>
-          <div class="case-stat">
-            <div class="case-stat-val">14 days</div>
-            <div class="case-stat-label">Total turnaround</div>
+          <div class="case-text">
+            <h4>Passive & Outdated</h4>
+            <p>An outdated, low-fidelity template with passive fluff copywriting that actively undermined their industrial scale.</p>
           </div>
         </div>
-        <a href="https://standard-steel.vercel.app" target="_blank" class="case-link">
-          View live site
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-        </a>
+        <div class="case-col case-after">
+          <div class="case-img-wrap">
+            <div class="case-img-label">The Transformation (After)</div>
+            <img src="images/ss-after-demo.webp" alt="Standard Steel UI After Demo">
+          </div>
+          <div class="case-text">
+            <h4>Tier-One Execution</h4>
+            <p>A cinematic, high-fidelity B2B engineering presence. We engineered a robust structural design system featuring a split-column Facility layout, a dynamic "Bento-Box" Projects gallery, and aggressive, authoritative B2B copywriting that positions them as a tier-one supplier.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ 5. PROCESS ═══ -->
 <div class="process-section" id="process">
   <div class="wrap">
     <div class="process-header" data-aos="fade-up">
@@ -736,7 +721,6 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   </div>
 </div>
 
-<!-- ═══ 6. CONTACT ═══ -->
 <div class="contact-section" id="contact">
   <div class="wrap">
     <div class="contact-grid">
@@ -812,7 +796,6 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   </div>
 </div>
 
-<!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="footer-inner">
     <a href="#" class="footer-logo">keysm<span>.</span></a>
@@ -820,7 +803,6 @@ footer p{font-size:.78rem;color:var(--text-dim);}
   </div>
 </footer>
 
-<!-- Cursor -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
